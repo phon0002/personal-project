@@ -21,6 +21,7 @@ graph TB
             URR["UserRedisRepository - CrudRepository"]
             GRR["GameRedisRepository - CrudRepository"]
             UMR["UserMongoRepository - MongoRepository"]
+            UMYSQLR["UserMysqlRepository - JpaRepository"]
         end
 
         subgraph Models
@@ -31,6 +32,9 @@ graph TB
             subgraph MongoDBModels["MongoDB Models"]
                 UM["UserMongo"]
                 UPM["UserPartialMongo"]
+            end
+            subgraph MySQLModels["MySQL Models"]
+                UMYSQL["UserMysql - JPA Entity, Persons table"]
             end
             subgraph DynamoDBModels["DynamoDB Models"]
                 UDB["UserDB - DynamoDBTable"]
@@ -90,12 +94,13 @@ graph TB
     REDIS_STACK -.-> REDIS
 
     UMR --> MONGO
+    UMYSQLR --> UMYSQL
+    UMYSQLR --> MYSQL
     UDB -.-> DYNAMO
 
     UTIL --> KAFKA
     KAFKA --> ZK
 
-    MYSQL -.->|Persons table| MYSQL
 ```
 
 ## Data Flow
@@ -148,5 +153,5 @@ sequenceDiagram
 | Repository | UserMongoRepository | MongoDB | 27017 |
 | Model | UserDB | DynamoDB Local | 8000 |
 | Messaging | Util / Randomizer | Kafka | 9092 |
-| Database | Persons table | MySQL | 3306 |
+| Repository | UserMysqlRepository | MySQL | 3306 |
 | Cache | trackCache (10min), customerCache (5min), default (60min) | Redis | 6379 |
