@@ -1,12 +1,15 @@
 package com.tutorial.mysql.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "Addresses")
 @ToString(exclude = "user")
@@ -33,4 +36,17 @@ public class UserAddress {
     @JoinColumn(name = "PersonID", nullable = false)
     @JsonIgnore
     private UserMysql user;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserAddress)) return false;
+        UserAddress that = (UserAddress) o;
+        return Objects.equals(addressId, that.addressId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(addressId);
+    }
 }
