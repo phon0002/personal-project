@@ -1,6 +1,8 @@
 package com.tutorial.mysql.service;
 
+import com.tutorial.mysql.model.UserAddress;
 import com.tutorial.mysql.model.UserMysql;
+import com.tutorial.mysql.repo.UserAddressRepository;
 import com.tutorial.mysql.repo.UserMysqlRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +12,11 @@ import java.util.List;
 public class UserMysqlService {
 
     private final UserMysqlRepository userMysqlRepository;
+    private final UserAddressRepository userAddressRepository;
 
-    public UserMysqlService(UserMysqlRepository userMysqlRepository) {
+    public UserMysqlService(UserMysqlRepository userMysqlRepository, UserAddressRepository userAddressRepository) {
         this.userMysqlRepository = userMysqlRepository;
+        this.userAddressRepository = userAddressRepository;
     }
 
     public List<UserMysql> getAllUsers() {
@@ -37,5 +41,22 @@ public class UserMysqlService {
 
     public void deleteUser(Integer id) {
         userMysqlRepository.deleteById(id);
+    }
+
+    public List<UserAddress> getAddressesByUserId(Integer personId) {
+        return userAddressRepository.findByUserPersonId(personId);
+    }
+
+    public UserAddress addAddressToUser(Integer personId, UserAddress address) {
+        UserMysql user = userMysqlRepository.findById(personId).orElse(null);
+        if (user == null) {
+            return null;
+        }
+        address.setUser(user);
+        return userAddressRepository.save(address);
+    }
+
+    public void deleteAddress(Integer addressId) {
+        userAddressRepository.deleteById(addressId);
     }
 }

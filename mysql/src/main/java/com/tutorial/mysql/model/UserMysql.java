@@ -1,12 +1,16 @@
 package com.tutorial.mysql.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "Persons")
+@ToString(exclude = "addresses")
 public class UserMysql {
 
     @Id
@@ -24,4 +28,7 @@ public class UserMysql {
 
     @Column(name = "City")
     private String city;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserAddress> addresses = new ArrayList<>();
 }
