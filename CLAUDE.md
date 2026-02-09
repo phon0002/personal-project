@@ -32,7 +32,7 @@ Spring Boot application with multi-data-store integration:
 
 - **Entry point:** `src/main/java/com/tutorial/TutorialApplication.java` — `@SpringBootApplication` with `@EnableCaching` and `@EnableAsync`, configures a thread pool executor (core=2, max=2, queue=500)
 - **Configuration:** `src/main/java/com/tutorial/AppConfig.java` — `@ComponentScan("com.tutorial")`
-- **Application config:** `src/main/resources/application.yml` — Kafka consumer settings, Resilience4j retry config
+- **Application config:** `src/main/resources/application.yml` — MySQL datasource, Kafka consumer settings, Resilience4j retry config
 
 ### Data Layer Organization
 
@@ -41,6 +41,7 @@ Models are organized by data store under `src/main/java/com/tutorial/model/`:
 - `redis/GameRedis.java` — `@RedisHash("Game")` with fields: `title`, `genre`, `platform`
 - `mongo/full/` and `mongo/partial/` — MongoDB documents for `users` and `users-partial` collections
 - `UserDB.java` — DynamoDB table entity (`@DynamoDBTable`)
+- `mysql/UserMysql.java` — JPA `@Entity` mapped to the `Persons` table (fields: `personId`, `lastName`, `firstName`, `address`, `city`)
 - `jpa/partial/` — JPA entities (placeholder)
 
 ### Key Integrations
@@ -48,6 +49,7 @@ Models are organized by data store under `src/main/java/com/tutorial/model/`:
 - **Redis:** `RedisConfig` with LettuceConnectionFactory, named caches (`trackCache` 10min, `customerCache` 5min, default 60min). `UserRedisService` demonstrates `@Cacheable`, `@CachePut`, `@CacheEvict`, and scheduled cache eviction. `GameRedisService` provides CRUD with `@Cacheable`/`@CacheEvict` on the `games` cache, exposed via `GameRedisController` at `/games`.
 - **Kafka:** Consumer configured for `localhost:29092`, Kafka Streams support. `Util` class has helpers for topic creation and a `Randomizer` that publishes fake data.
 - **MongoDB:** Repositories extend `MongoRepository` with custom queries.
+- **MySQL:** `UserMysqlRepository` extends `JpaRepository` with custom queries (`findByLastName`, `findByCity`). Datasource configured for `localhost:3306/gogz` with Hibernate `ddl-auto: validate`.
 - **Resilience4j:** Retry instance `hello-retry` configured with exponential backoff (3 attempts, 1s wait, 2x multiplier).
 
 ### OpenAPI Code Generation
