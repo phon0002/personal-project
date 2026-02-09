@@ -15,14 +15,17 @@ Help with GitHub pull requests using the GitHub CLI (`gh`).
 When the user runs `/pr create` or `/pr` with no arguments:
 
 1. Run `git status` to check for uncommitted changes
-2. Run `git log` and `git diff main...HEAD` (or `master...HEAD`) to understand all changes on the current branch
-3. Check if the branch has been pushed to remote
-4. Draft a concise PR title (under 70 characters) and description
-5. Push the branch if needed with `-u` flag
-6. Create the PR using `gh pr create` with this format:
+2. Determine the base branch (`main` or `master`)
+3. If currently on the base branch:
+   a. Generate a descriptive feature branch name from the commits (e.g., `feature/add-redis-module`)
+   b. Create and switch to the feature branch: `git checkout -b <branch-name>`
+4. Run `git log` and `git diff <base>...HEAD` to understand all changes on the current branch
+5. Draft a concise PR title (under 70 characters) and description
+6. Push the feature branch to remote with `-u` flag: `git push -u origin <branch-name>`
+7. Create the PR targeting the base branch using `gh pr create` with this format:
 
 ```
-gh pr create --title "title" --body "$(cat <<'EOF'
+gh pr create --base <base-branch> --title "title" --body "$(cat <<'EOF'
 ## Summary
 <1-3 bullet points>
 
@@ -34,7 +37,9 @@ EOF
 )"
 ```
 
-6. Return the PR URL
+8. Return the PR URL
+
+**Important:** Never push directly to the base branch. Always create a feature branch first.
 
 ### Review a PR
 When the user runs `/pr review <number>`:
