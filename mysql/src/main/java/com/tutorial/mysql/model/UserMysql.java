@@ -1,20 +1,25 @@
 package com.tutorial.mysql.model;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "Persons")
 @ToString(exclude = "addresses")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserMysql {
 
     @Id
     @Column(name = "PersonID")
+    @EqualsAndHashCode.Include
     private Integer personId;
 
     @Column(name = "LastName")
