@@ -1,13 +1,16 @@
 package com.tutorial.mysql.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "Persons")
 @ToString(exclude = "addresses")
@@ -31,4 +34,17 @@ public class UserMysql {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserAddress> addresses = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserMysql)) return false;
+        UserMysql that = (UserMysql) o;
+        return Objects.equals(personId, that.personId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(personId);
+    }
 }
