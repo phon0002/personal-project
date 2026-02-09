@@ -38,13 +38,14 @@ Spring Boot application with multi-data-store integration:
 
 Models are organized by data store under `src/main/java/com/tutorial/model/`:
 - `redis/UserRedis.java` — `@RedisHash("User")`
+- `redis/GameRedis.java` — `@RedisHash("Game")` with fields: `title`, `genre`, `platform`
 - `mongo/full/` and `mongo/partial/` — MongoDB documents for `users` and `users-partial` collections
 - `UserDB.java` — DynamoDB table entity (`@DynamoDBTable`)
 - `jpa/partial/` — JPA entities (placeholder)
 
 ### Key Integrations
 
-- **Redis:** `RedisConfig` with LettuceConnectionFactory, named caches (`trackCache` 10min, `customerCache` 5min, default 60min). `UserRedisService` demonstrates `@Cacheable`, `@CachePut`, `@CacheEvict`, and scheduled cache eviction.
+- **Redis:** `RedisConfig` with LettuceConnectionFactory, named caches (`trackCache` 10min, `customerCache` 5min, default 60min). `UserRedisService` demonstrates `@Cacheable`, `@CachePut`, `@CacheEvict`, and scheduled cache eviction. `GameRedisService` provides CRUD with `@Cacheable`/`@CacheEvict` on the `games` cache, exposed via `GameRedisController` at `/games`.
 - **Kafka:** Consumer configured for `localhost:29092`, Kafka Streams support. `Util` class has helpers for topic creation and a `Randomizer` that publishes fake data.
 - **MongoDB:** Repositories extend `MongoRepository` with custom queries.
 - **Resilience4j:** Retry instance `hello-retry` configured with exponential backoff (3 attempts, 1s wait, 2x multiplier).
