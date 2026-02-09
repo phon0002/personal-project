@@ -57,6 +57,13 @@ public class UserMysqlService {
         return userAddressRepository.save(address);
     }
 
+    /**
+     * Deletes an address by its ID in an idempotent manner.
+     * If the address doesn't exist, the operation succeeds without error.
+     *
+     * @param addressId the ID of the address to delete
+     * @return true if the address was found and deleted, false if it didn't exist
+     */
     @Transactional
     public boolean deleteAddress(Integer addressId) {
         Long deletedCount = userAddressRepository.deleteByAddressId(addressId);
