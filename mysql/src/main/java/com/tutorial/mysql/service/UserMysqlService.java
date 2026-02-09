@@ -59,10 +59,7 @@ public class UserMysqlService {
 
     @Transactional
     public boolean deleteAddress(Integer addressId) {
-        if (!userAddressRepository.existsById(addressId)) {
-            return false;
-        }
-        userAddressRepository.deleteById(addressId);
-        return true;
+        Long deletedCount = userAddressRepository.deleteByAddressId(addressId);
+        return deletedCount > 0;
     }
 }
