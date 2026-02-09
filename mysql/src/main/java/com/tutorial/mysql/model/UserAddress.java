@@ -1,20 +1,25 @@
 package com.tutorial.mysql.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "Addresses")
 @ToString(exclude = "user")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AddressID")
+    @EqualsAndHashCode.Include
     private Integer addressId;
 
     @Column(name = "Street")
