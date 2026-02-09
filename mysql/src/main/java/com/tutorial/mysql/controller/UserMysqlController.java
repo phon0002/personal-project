@@ -1,5 +1,6 @@
 package com.tutorial.mysql.controller;
 
+import com.tutorial.mysql.model.UserAddress;
 import com.tutorial.mysql.model.UserMysql;
 import com.tutorial.mysql.service.UserMysqlService;
 import org.springframework.web.bind.annotation.*;
@@ -44,5 +45,20 @@ public class UserMysqlController {
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Integer id) {
         userMysqlService.deleteUser(id);
+    }
+
+    @GetMapping("/{id}/addresses")
+    public List<UserAddress> getAddressesByUserId(@PathVariable Integer id) {
+        return userMysqlService.getAddressesByUserId(id);
+    }
+
+    @PostMapping("/{id}/addresses")
+    public UserAddress addAddressToUser(@PathVariable Integer id, @RequestBody UserAddress address) {
+        return userMysqlService.addAddressToUser(id, address);
+    }
+
+    @DeleteMapping("/addresses/{addressId}")
+    public void deleteAddress(@PathVariable Integer addressId) {
+        userMysqlService.deleteAddress(addressId);
     }
 }
