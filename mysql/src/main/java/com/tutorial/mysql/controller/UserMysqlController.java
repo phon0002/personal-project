@@ -3,6 +3,7 @@ package com.tutorial.mysql.controller;
 import com.tutorial.mysql.model.UserAddress;
 import com.tutorial.mysql.model.UserMysql;
 import com.tutorial.mysql.service.UserMysqlService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,7 +59,12 @@ public class UserMysqlController {
     }
 
     @DeleteMapping("/addresses/{addressId}")
-    public void deleteAddress(@PathVariable Integer addressId) {
-        userMysqlService.deleteAddress(addressId);
+    public ResponseEntity<Void> deleteAddress(@PathVariable Integer addressId) {
+        boolean deleted = userMysqlService.deleteAddress(addressId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

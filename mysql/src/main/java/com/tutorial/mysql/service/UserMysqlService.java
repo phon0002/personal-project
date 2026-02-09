@@ -56,7 +56,11 @@ public class UserMysqlService {
         return userAddressRepository.save(address);
     }
 
-    public void deleteAddress(Integer addressId) {
+    public boolean deleteAddress(Integer addressId) {
+        if (!userAddressRepository.existsById(addressId)) {
+            return false;
+        }
         userAddressRepository.deleteById(addressId);
+        return true;
     }
 }
