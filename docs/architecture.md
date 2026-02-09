@@ -3,68 +3,68 @@
 ```mermaid
 graph TB
     subgraph Clients
-        HTTP[HTTP Clients]
+        HTTP["HTTP Clients"]
     end
 
-    subgraph Spring Boot Application
+    subgraph SpringBootApplication["Spring Boot Application"]
         subgraph Controllers
-            URC[UserRedisController<br/>/users]
-            GRC[GameRedisController<br/>/games]
+            URC["UserRedisController /users"]
+            GRC["GameRedisController /games"]
         end
 
         subgraph Services
-            URS[UserRedisService<br/>@Cacheable @CacheEvict @CachePut]
-            GRS[GameRedisService<br/>@Cacheable @CacheEvict]
+            URS["UserRedisService - Cacheable, CacheEvict, CachePut"]
+            GRS["GameRedisService - Cacheable, CacheEvict"]
         end
 
         subgraph Repositories
-            URR[UserRedisRepository<br/>CrudRepository]
-            GRR[GameRedisRepository<br/>CrudRepository]
-            UMR[UserMongoRepository<br/>MongoRepository]
+            URR["UserRedisRepository - CrudRepository"]
+            GRR["GameRedisRepository - CrudRepository"]
+            UMR["UserMongoRepository - MongoRepository"]
         end
 
         subgraph Models
-            subgraph Redis Models
-                UR[UserRedis<br/>@RedisHash]
-                GR[GameRedis<br/>@RedisHash]
+            subgraph RedisModels["Redis Models"]
+                UR["UserRedis - RedisHash"]
+                GR["GameRedis - RedisHash"]
             end
-            subgraph MongoDB Models
-                UM[UserMongo]
-                UPM[UserPartialMongo]
+            subgraph MongoDBModels["MongoDB Models"]
+                UM["UserMongo"]
+                UPM["UserPartialMongo"]
             end
-            subgraph DynamoDB Models
-                UDB[UserDB<br/>@DynamoDBTable]
+            subgraph DynamoDBModels["DynamoDB Models"]
+                UDB["UserDB - DynamoDBTable"]
             end
         end
 
         subgraph Configuration
-            RC[RedisConfig<br/>LettuceConnectionFactory]
-            CM[RedisCacheManager<br/>trackCache · customerCache · default]
-            TA[TutorialApplication<br/>@EnableCaching @EnableAsync]
-            AC[AppConfig<br/>@ComponentScan]
+            RC["RedisConfig - LettuceConnectionFactory"]
+            CM["RedisCacheManager - trackCache, customerCache, default"]
+            TA["TutorialApplication - EnableCaching, EnableAsync"]
+            AC["AppConfig - ComponentScan"]
         end
 
         subgraph Utilities
-            UTIL[Util<br/>Kafka TopicCreator · Randomizer]
+            UTIL["Util - Kafka TopicCreator, Randomizer"]
         end
 
         subgraph Resilience
-            R4J[Resilience4j<br/>hello-retry<br/>3 attempts · exp backoff]
+            R4J["Resilience4j hello-retry - 3 attempts, exp backoff"]
         end
 
         subgraph OpenAPI
-            OAG[OpenAPI Generator<br/>Helloworld.yaml → build/gen/]
+            OAG["OpenAPI Generator - Helloworld.yaml"]
         end
     end
 
-    subgraph Infrastructure - Docker
-        REDIS[(Redis<br/>:6379)]
-        REDIS_STACK[(Redis Stack UI<br/>:8001)]
-        MONGO[(MongoDB<br/>:27017)]
-        MYSQL[(MySQL 8.0<br/>:3306<br/>gogz DB)]
-        DYNAMO[(DynamoDB Local<br/>:8000)]
-        ZK[Zookeeper<br/>:2181]
-        KAFKA[Kafka<br/>:9092]
+    subgraph Infrastructure["Infrastructure - Docker"]
+        REDIS[("Redis :6379")]
+        REDIS_STACK[("Redis Stack UI :8001")]
+        MONGO[("MongoDB :27017")]
+        MYSQL[("MySQL 8.0 :3306 gogz DB")]
+        DYNAMO[("DynamoDB Local :8000")]
+        ZK["Zookeeper :2181"]
+        KAFKA["Kafka :9092"]
     end
 
     HTTP --> URC
