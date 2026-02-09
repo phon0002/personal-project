@@ -5,6 +5,7 @@ import com.tutorial.mysql.model.UserMysql;
 import com.tutorial.mysql.repo.UserAddressRepository;
 import com.tutorial.mysql.repo.UserMysqlRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -56,7 +57,16 @@ public class UserMysqlService {
         return userAddressRepository.save(address);
     }
 
-    public void deleteAddress(Integer addressId) {
-        userAddressRepository.deleteById(addressId);
+    /**
+     * Deletes an address by its ID in an idempotent manner.
+     * This operation is safe to call even if the address doesn't exist.
+     *
+     * @param addressId the ID of the address to delete
+     * @return true if the address was found and deleted, false if it didn't exist
+     */
+    @Transactional
+    public boolean deleteAddress(Integer addressId) {
+        Long deletedCount = userAddressRepository.deleteByAddressId(addressId);
+        return deletedCount > 0;
     }
 }
