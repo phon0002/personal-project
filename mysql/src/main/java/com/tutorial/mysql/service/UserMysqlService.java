@@ -5,6 +5,7 @@ import com.tutorial.mysql.model.UserMysql;
 import com.tutorial.mysql.repo.UserAddressRepository;
 import com.tutorial.mysql.repo.UserMysqlRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -56,6 +57,7 @@ public class UserMysqlService {
         return userAddressRepository.save(address);
     }
 
+    @Transactional
     public boolean deleteAddress(Integer addressId) {
         if (!userAddressRepository.existsById(addressId)) {
             return false;
