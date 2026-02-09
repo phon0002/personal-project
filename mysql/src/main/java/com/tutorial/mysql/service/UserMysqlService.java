@@ -59,7 +59,7 @@ public class UserMysqlService {
 
     /**
      * Deletes an address by its ID in an idempotent manner.
-     * If the address doesn't exist, the operation succeeds without error.
+     * This operation is safe to call even if the address doesn't exist.
      *
      * @param addressId the ID of the address to delete
      * @return true if the address was found and deleted, false if it didn't exist
